@@ -7,9 +7,11 @@
 - 工具组件：Redis（缓存）、JWT（身份认证）、Lombok
 - 部署运维：Maven、Git、Linux
 ### 前端技术栈
-- 核心框架：Vue 2 / Vue CLI
-- UI 组件：Element UI
+- 核心框架：Vue 3 + Vite
+- 开发风格：Composition API（组合式 API）
+- UI 组件库：Element Plus
+- 路由与状态：Vue Router 4、Pinia
 - 网络请求：Axios
-- 路由状态：Vue Router、Vuex
+- 规范与构建：ESLint、Vite 构建
 ### 全栈架构
 - 前后端分离架构，RESTful API 接口规范，支持多角色权限管理、高并发缓存优化、交易数据安全存储。
