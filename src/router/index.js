@@ -1,19 +1,13 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Login from '../views/Login.vue'
-import Home from '../views/firstPage/Home.vue'
-import WorkList from '../views/WorkList.vue'
-import DemandList from '../views/DemandList.vue'
-import OrderList from '../views/OrderList.vue'
-import UserCenter from '../views/UserCenter.vue'
+import Login from '../views/login/LoginPage.vue'
+import FirstPage from '../views/firstPage/FirstPage.vue'
+
 
 const routes = [
-  { path: '/', redirect: '/home' },
+  { path: '/', redirect: '/login' },
   { path: '/login', component: Login },
-  { path: '/home', component: Home },
-  { path: '/work', component: WorkList },
-  { path: '/demand', component: DemandList },
-  { path: '/order', component: OrderList },
-  { path: '/user', component: UserCenter }
+  { path: '/firstpage', component: FirstPage },
+
 ]
 
 const router = createRouter({
