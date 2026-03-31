@@ -78,7 +78,6 @@ const register = async () => {
     ElMessage.success('注册成功，请登录')
     isRegister.value = false
     clearForm()
-    router.push('/firstpage')
   } catch (error) {
     ElMessage.error(error?.response?.data?.message || '注册失败，请重试')
   }
@@ -95,7 +94,9 @@ const login = async () => {
     const res = await userLoginService(formModel.value)
     userStore.setToken(res.data.token)
     ElMessage.success('登录成功')
-    router.push('/')
+    setTimeout(() => {
+      router.push('/firstpage')
+    }, 1500)
   } catch (error) {
     ElMessage.error(error?.response?.data?.message || '登录失败，请重试')
   }
@@ -113,8 +114,8 @@ const submit = () => {
 <template>
 
     <el-row  class="login-view">
-      <el-col :span="12" class="bg" />
-      <el-col :span="6" :offset="3" class="login-container">
+      <el-col :span="24" class="bg">
+      <el-col :span="6" :offset="9" class="login-container">
         <div class="card">
           <div class="heading">
             <h2>{{ isRegister ? '注册账号' : '登录平台' }}</h2>
@@ -165,6 +166,7 @@ const submit = () => {
           </el-form>
         </div>
       </el-col>
+       </el-col>
     </el-row>
 
 </template>
@@ -179,7 +181,7 @@ const submit = () => {
 
 .bg {
   min-height: 100vh;
-  background-image: url('@/assets/login-bg.png');
+  background-image: url('@/assets/login-bg.jpg');
   background-size: cover;
   background-position: center;
 }
@@ -194,6 +196,7 @@ const submit = () => {
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
   padding: 24px;
   min-height: 480px;
+  margin-top: 100px;
 }
 
 .heading {
