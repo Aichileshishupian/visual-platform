@@ -1,5 +1,5 @@
 <script setup>
-import { useUserStore } from '@/stores/user.js'
+import { useUserStore } from '@/stores/userstore.js'
 import { useRouter } from 'vue-router'
 import { ref, watch } from 'vue'
 import avatar from '@/assets/avatar.png'

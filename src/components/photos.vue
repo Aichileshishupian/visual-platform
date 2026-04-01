@@ -1,58 +1,59 @@
-<script lang="ts" setup>
+<script  setup>
+import { ref, watch } from 'vue';
 
-import { ref } from 'vue';
+import { useWorksStore } from '@/stores/workstore.js';
 
-const url = 'https://fuss10.elemecdn.com/a/3f/3302e58f9a181d2509f3dc0fa68b0jpeg.jpeg'
+// 1. 正确定义props：接收父组件传的单个作品数据
+const props = defineProps({
+  photo: {
+    type: Object,
+    required: true,
+    // 给默认值，防止报错
+    default: () => ({
+      id: 0,
+      imageUrl: '',
+      likeCount: 0,
+      collectCount: 0,
+      title: '默认标题',
+      description: '默认描述',
+    })
+  }
+});
 
-const isLiked =ref(false)
-const LikeCount = ref(0)
-const isCollected = ref(false)
-const CollectCount = ref(0)
-
-const toggleLike = () => {
-  isLiked.value = !isLiked.value
-  LikeCount.value = isLiked.value ? LikeCount.value + 1 : LikeCount.value - 1 
-}
-const toggleCollect = () => {
-  isCollected.value = !isCollected.value
-  CollectCount.value = isCollected.value ? CollectCount.value + 1 : CollectCount.value - 1 
-
-}
-  
-
+const worksStore = useWorksStore();
 </script>
-
-
 
 <template>
   <div class="image-card">
     <!-- 图片 -->
     <el-image
-      :src="url"
-      :preview-src-list="[url]"
+      :src="photo.imageUrl"
+      :preview-src-list="[photo.imageUrl]"
       fit="cover"
       :zoom-rate="1.2"
       :max-scale="7"
       :min-scale="0.2"
       show-progress
+      preview-teleported
     />
 
     <!-- 悬浮层 -->
     <div class="hover-layer">
-      <!-- 左下角标题 -->
-      <div class="title">图片标题</div>
-
+       <div class="info">
+        <div class="title">{{ photo.title }}</div>
+        <p class="desc">{{ photo.description }}</p>
+      </div>
       <!-- 右下角点赞 + 收藏 -->
       <div class="actions">
-        <div class="item" @click.stop="toggleLike" :class="{active: isLiked}">
-          <Heart v-if="!isLiked" />
-          <HeartFilled v-if="isLiked" /> 
-          <span>{{ LikeCount }}</span>
+        <div class="item-like" @click.stop="worksStore.toggleLike(photo.id)" :class="{active: photo.isLiked}">
+           <span v-if="!photo.isLiked">♡</span>
+           <span v-else>♥</span>
+          <span>{{ photo.likeCount }}</span>
         </div>
-        <div class="item" @click.stop="toggleCollect" :class="{active: isCollected}">
-          <StarFilled v-if="isCollected" />
-          <Star v-else />
-          <span>{{ CollectCount }}</span>
+        <div class="item-collect" @click.stop="worksStore.toggleCollect(photo.id)" :class="{active: photo. isCollected}">
+           <span v-if="!photo.isCollected">☆</span>
+           <span v-else>★</span>
+          <span>{{ photo.collectCount }}</span>
         </div>
       </div>
     </div>
@@ -104,9 +105,20 @@ const toggleCollect = () => {
 }
 
 /* 左下角标题 */
+.info {
+  margin-bottom: 10px;
+}
+
 .title {
   font-size: 14px;
   font-weight: 500;
+  margin-bottom: 4px;
+}
+
+.desc {
+  font-size: 12px;
+  opacity: 0.9;
+  margin: 0;
 }
 
 /* 右侧图标容器 */
@@ -128,7 +140,12 @@ const toggleCollect = () => {
   transform: scale(1.1);
 }
 
-.item.active {
+.item-like.active {
   color: #ff4757;
 }
+
+.item-collect.active {
+  color: #ffae00;
+}
+
 </style>

@@ -1,9 +1,9 @@
 ﻿<script setup>
 import { ref, reactive, watch } from 'vue'
 import { ElMessage } from 'element-plus'
-import { useUserStore } from '@/stores/user.js'
+import { useUserStore } from '@/stores/userstore.js'
 import { useRouter } from 'vue-router'
-import { userRegisterService, userLoginService } from '@/api/user.js'
+import { userRegisterService, userLoginService } from '@/api/userApi.js'
 
 
 const isRegister = ref(false)

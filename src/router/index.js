@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Login from '../views/login/LoginPage.vue'
 import FirstPage from '../views/firstPage/FirstPage.vue'
-import { useUserStore } from '@/stores/user.js'
+import { useUserStore } from '@/stores/userstore.js'
 import { ElMessage } from 'element-plus'
 
 const routes = [
@@ -53,9 +53,9 @@ const router = createRouter({
   history: createWebHistory(),
   routes
 })
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
   const userStore = useUserStore()
-
+  
   // 如果要去的页面需要登录
   if (to.meta.requiresAuth) {
     // 判断是否登录（有token = 登录）
