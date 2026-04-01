@@ -1,22 +1,19 @@
-import axios from 'axios'
+import api from '@/utils/request.js'
 
-const api = axios.create({
-  baseURL: '' // 你可以在这里改成你的后端地址，例如：http://localhost:3000
-})
-
+// 注册
 export function userRegisterService(data) {
-  // 如果你没有后端接口，可先用以下mock实现：
-   return Promise.resolve({ data: { message: 'mock register success' } })
-  //return api.post('/register', data)
+  console.log('✅ 注册接口开始调用')
+  return api.post('/user/register', data)
 }
 
+// 登录
 export function userLoginService(data) {
-  // 如果你没有后端接口，可先用以下 mock 实现：
-   return Promise.resolve({ data: { token: 'mock-token' } })
-  //return api.post('/login', data)
+  console.log('✅ 登录接口开始调用')
+  return api.get('/user/login', data)
 }
 
+// 获取用户信息
 export function userGetInfoService() {
-  return Promise.resolve({ data: { data: { name: '匿名用户' } } })
- // return api.get('/user/info')
+  console.log('✅ 用户信息接口调用')
+  return api.get('/user/info')
 }

@@ -2,37 +2,47 @@ import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import { userGetInfoService } from '@/api/user.js'
 
-// 用户模块 token setToken removeToken
 export const useUserStore = defineStore(
-  'big-user',
+  'user',
   () => {
     const token = ref('')
+    const userInfo = ref({})
+
+    // 设置token
     const setToken = (newToken) => {
       token.value = newToken
     }
+
+    // 清除token
     const removeToken = () => {
       token.value = ''
     }
 
-    const user = ref({})
-    const getUser = async () => {
-      const res = await userGetInfoService() // 请求获取数据
-      user.value = res.data.data
-    }
+    // 设置用户信息
     const setUser = (obj) => {
-      user.value = obj
+      userInfo.value = obj
+    }
+
+    // 获取用户信息
+    const getUser = async () => {
+      try {
+        const res = await userGetInfoService()
+        userInfo.value = res.data.data || {}
+      } catch (err) {
+        console.error('获取用户信息失败')
+      }
     }
 
     return {
       token,
+      userInfo,
       setToken,
       removeToken,
-      user,
-      getUser,
-      setUser
+      setUser,
+      getUser
     }
   },
   {
-    persist: true
+    persist: true // 持久化
   }
 )

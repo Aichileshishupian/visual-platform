@@ -1,14 +1,24 @@
 import { createApp } from 'vue'
 import App from './App.vue'
-import { createPinia } from 'pinia' // 引入 Pinia
-import router from './router' // 你的路由
+import { createPinia } from 'pinia'
+import router from './router'
 import ElementPlus from 'element-plus'
-import 'element-plus/dist/index.css' // Element Plus 样式
+import 'element-plus/dist/index.css'
+
+// 导入所有图标
+import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 
 const app = createApp(App)
 
-app.use(createPinia()) // 挂载 Pinia（必须在 router 之前）
+// 全局注册所有 Element Plus 图标（关键！）
+for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
+  app.component(key, component)
+}
+
+app.use(createPinia())
 app.use(router)
-app.use(ElementPlus)
+app.use(ElementPlus, {
+  teleport: '#el-image-viewer-container'
+})
 
 app.mount('#app')

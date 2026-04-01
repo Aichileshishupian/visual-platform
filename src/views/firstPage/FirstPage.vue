@@ -1,25 +1,61 @@
 <script setup>
-import {
-  Collection,
-  List,
-  Upload,
-  Postcard,
-  UserFilled,
-  User,
-  Crop,
-  CaretBottom,
-  EditPen,
-  SwitchButton
-} from '@element-plus/icons-vue'
 import { useUserStore } from '@/stores/user.js'
 import { useRouter } from 'vue-router'
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import avatar from '@/assets/avatar.png'
 
 const userStore = useUserStore()
 const router = useRouter()
 const isCollapse = ref(true)
 
+const pageTitle = ref('欢迎来到光迹-视觉服务可信交易平台')
+watch(
+  () => router.currentRoute.value.path,
+  (newPath) => {
+    switch (newPath) {
+      case '/works/WorkList':
+        pageTitle.value = '作品列表'
+        break
+      case '/works/WorksCreate':
+        pageTitle.value = '作品上传'
+        break
+      case '/works/MyWorks':
+        pageTitle.value = '我的作品'
+        break
+      case '/demand/publish':
+        pageTitle.value = '发布需求'
+        break
+      case '/demand/search':
+        pageTitle.value = '寻找需求'
+        break
+      case '/demand/my':
+        pageTitle.value = '我的需求'
+        break
+      case '/order/all':
+        pageTitle.value = '全部订单'
+        break
+      case '/order/pending':
+        pageTitle.value = '待处理订单'
+        break
+      case '/order/finished':
+        pageTitle.value = '已完成订单'
+        break
+      case '/user/profile':
+        pageTitle.value = '基本资料'
+        break
+      case '/user/dashboard':
+        pageTitle.value = '数据看板'
+        break
+      case '/user/setting':
+        pageTitle.value = '账户设置'
+        break
+      default:
+        pageTitle.value = '欢迎来到光迹-视觉服务可信交易平台'
+    }
+    
+  },
+  { immediate: true }
+)
 const handleCommand = (command) => {
   if (command === 'logout') {
     userStore.logout()
@@ -43,17 +79,20 @@ const handleCommand = (command) => {
       <el-menu
         active-text-color="#ffd04b"
         background-color="#232323"
-        open-trigger="hover"
         :hover-timeout="200" 
         :default-active="$route.path"
         text-color="#fff"
         router
         :collapse="isCollapse"
+        unique-opened  
+        :default-openeds="['sub-menu-works']" 
+     
+      
       >
         <!-- ====================== 作品分享交流论坛 ====================== -->
-        <el-sub-menu index="">
+        <el-sub-menu index="sub-menu-works" >
           <template #title>
-            <el-icon><Collection /></el-icon>
+            <el-icon><CameraFilled /></el-icon>
             <span>作品分享</span>
           </template>
           <el-menu-item index="/works/WorkList">
@@ -65,14 +104,13 @@ const handleCommand = (command) => {
             <span>作品上传</span>
           </el-menu-item>
           <el-menu-item index="/works/MyWorks">
-             <el-icon><Postcard /></el-icon>
             <el-icon><Postcard /></el-icon>
             <span>我的作品</span>
           </el-menu-item>
         </el-sub-menu>
 
         <!-- ====================== 商业需求 ====================== -->
-        <el-sub-menu index="/demand">
+        <el-sub-menu index="sub-menu-demand">
           <template #title>
             <el-icon><Collection /></el-icon>
             <span>商业需求</span>
@@ -84,23 +122,17 @@ const handleCommand = (command) => {
           <el-menu-item index="/demand/search">
              <el-icon><Upload /></el-icon>
              <span>寻找需求</span>
-            <el-icon><Upload /></el-icon>
-            <span>寻找需求</span>
           </el-menu-item>
           <el-menu-item index="/demand/my">
-             <el-icon><Upload /></el-icon>
+             <el-icon><Postcard /></el-icon>
              <span>我的需求</span>
-             <el-icon><Upload /></el-icon>
-             <span>我的需求</span>
-            <el-icon><Upload /></el-icon>
-            <span>我的需求</span>
           </el-menu-item>
         </el-sub-menu>
 
         <!-- ====================== 我的订单 ====================== -->
-        <el-sub-menu index="/order">
+        <el-sub-menu index="sub-menu-order">
           <template #title>
-            <el-icon><Collection /></el-icon>
+            <el-icon><Document /></el-icon>
             <span>我的订单</span>
           </template>
           <el-menu-item index="/order/all">
@@ -108,17 +140,17 @@ const handleCommand = (command) => {
             <span>全部订单</span>
           </el-menu-item>
           <el-menu-item index="/order/pending">
-            <el-icon><Upload /></el-icon>
+            <el-icon><More /></el-icon>
             <span>待处理</span>
           </el-menu-item>
           <el-menu-item index="/order/finished">
-            <el-icon><Upload /></el-icon>
+            <el-icon><CircleCheck /></el-icon>
             <span>已完成</span>
           </el-menu-item>
         </el-sub-menu>
 
         <!-- ====================== 个人中心 ====================== -->
-        <el-sub-menu index="/user/profile">
+        <el-sub-menu index="sub-menu-user">
           <template #title>
             <el-icon><UserFilled /></el-icon>
             <span>个人中心</span>
@@ -128,7 +160,7 @@ const handleCommand = (command) => {
             <span>基本资料</span>
           </el-menu-item>
           <el-menu-item index="/user/dashboard">
-            <el-icon><Crop /></el-icon>
+            <el-icon><Operation /></el-icon>
             <span>数据看板</span>
           </el-menu-item>
           <el-menu-item index="/user/setting">
@@ -143,7 +175,7 @@ const handleCommand = (command) => {
     <el-container>
       <el-header>
         <div>
-          
+          <span class="app-name">{{pageTitle}}</span>
         </div>
 
         <el-dropdown placement="bottom-end" @command="handleCommand">
