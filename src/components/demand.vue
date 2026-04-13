@@ -1,72 +1,86 @@
 <template>
   <el-descriptions
     class="margin-top"
-    title="With border"
     :column="3"
     :size="size"
     border
   >
     <template #extra>
-      <el-button type="primary">Operation</el-button>
+      <el-button type="primary" size="small">接受</el-button>
     </template>
+
     <el-descriptions-item>
       <template #label>
         <div class="cell-item">
           <el-icon :style="iconStyle">
-            <user />
+            <User />
           </el-icon>
-          Username
+          发布者
         </div>
       </template>
-      kooriookami
+      {{ item?.username || '匿名' }}
     </el-descriptions-item>
+
     <el-descriptions-item>
       <template #label>
         <div class="cell-item">
           <el-icon :style="iconStyle">
-            <iphone />
+            <Iphone />
           </el-icon>
-          Telephone
+          联系电话
         </div>
       </template>
-      18100000000
+      {{ item?.telephone || '—' }}
     </el-descriptions-item>
+
     <el-descriptions-item>
       <template #label>
         <div class="cell-item">
           <el-icon :style="iconStyle">
-            <location />
+            <Location />
           </el-icon>
-          Place
+          地点
         </div>
       </template>
-      Suzhou
+      {{ item?.place || item?.location || '不限' }}
     </el-descriptions-item>
+
     <el-descriptions-item>
       <template #label>
         <div class="cell-item">
           <el-icon :style="iconStyle">
-            <tickets />
+            <Tickets />
           </el-icon>
-          Remarks
+          预算
         </div>
       </template>
-      <el-tag size="small">School</el-tag>
+      <el-tag size="small">{{ item?.budget || '面议' }}</el-tag>
     </el-descriptions-item>
+
     <el-descriptions-item>
       <template #label>
         <div class="cell-item">
           <el-icon :style="iconStyle">
-            <office-building />
+            <OfficeBuilding />
           </el-icon>
-          Address
+          需求类型
         </div>
       </template>
-      No.1188, Wuzhong Avenue, Wuzhong District, Suzhou, Jiangsu Province
+      {{ item?.type || '—' }}
+    </el-descriptions-item>
+     <el-descriptions-item>
+      <template #label>
+        <div class="cell-item">
+          <el-icon :style="iconStyle">
+            <OfficeBuilding />
+          </el-icon>
+          详情
+        </div>
+      </template>
+      {{ item?.description || '—' }}
     </el-descriptions-item>
   </el-descriptions>
-
-
+  
 </template>
 
 <script setup>
@@ -79,6 +93,13 @@ import {
   User,
 } from '@element-plus/icons-vue'
 
+const props = defineProps({
+  item: {
+    type: Object,
+    default: () => ({})
+  }
+})
+
 const size = ref('default')
 
 const iconStyle = computed(() => {
@@ -89,16 +110,6 @@ const iconStyle = computed(() => {
   }
   return {
     marginRight: marginMap[size.value] || marginMap.default,
-  }
-})
-const blockMargin = computed(() => {
-  const marginMap = {
-    large: '32px',
-    default: '28px',
-    small: '24px',
-  }
-  return {
-    marginTop: marginMap[size.value] || marginMap.default,
   }
 })
 </script>

@@ -8,6 +8,9 @@ const userStore = useUserStore()
 const router = useRouter()
 const isCollapse = ref(true)
 
+
+
+
 const pageTitle = ref('欢迎来到光迹-视觉服务可信交易平台')
 watch(
   () => router.currentRoute.value.path,
@@ -46,9 +49,7 @@ watch(
       case '/user/dashboard':
         pageTitle.value = '数据看板'
         break
-      case '/user/setting':
-        pageTitle.value = '账户设置'
-        break
+     
       default:
         pageTitle.value = '欢迎来到光迹-视觉服务可信交易平台'
     }
@@ -155,18 +156,16 @@ const handleCommand = (command) => {
             <el-icon><UserFilled /></el-icon>
             <span>个人中心</span>
           </template>
+           <el-menu-item index="/user/dashboard">
+            <el-icon><Operation /></el-icon>
+            <span>数据看板</span>
+          </el-menu-item>
           <el-menu-item index="/user/profile">
             <el-icon><User /></el-icon>
             <span>基本资料</span>
           </el-menu-item>
-          <el-menu-item index="/user/dashboard">
-            <el-icon><Operation /></el-icon>
-            <span>数据看板</span>
-          </el-menu-item>
-          <el-menu-item index="/user/setting">
-            <el-icon><Crop /></el-icon>
-            <span>账户设置</span>
-          </el-menu-item>
+         
+        
         </el-sub-menu>
 
       </el-menu>
@@ -204,7 +203,11 @@ const handleCommand = (command) => {
       </el-header>
 
       <el-main>
-        <router-view />
+       
+
+        <section >
+          <router-view />
+        </section>
       </el-main>
 
       <el-footer>光迹-视觉服务可信交易平台 ©2026</el-footer>
@@ -256,5 +259,14 @@ const handleCommand = (command) => {
     font-size: 14px;
     color: #666;
   }
+}
+
+
+
+
+@media (max-width: 1024px) {
+  .hero-title { font-size: 28px }
+  .site-hero { min-height: 320px }
+  .content-card { margin: -40px 14px 24px; padding: 18px }
 }
 </style>

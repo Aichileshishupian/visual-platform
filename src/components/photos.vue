@@ -1,14 +1,10 @@
-<script  setup>
-import { ref, watch } from 'vue';
-
+<script setup>
 import { useWorksStore } from '@/stores/workstore.js';
 
-// 1. 正确定义props：接收父组件传的单个作品数据
 const props = defineProps({
   photo: {
     type: Object,
     required: true,
-    // 给默认值，防止报错
     default: () => ({
       id: 0,
       imageUrl: '',
@@ -16,6 +12,8 @@ const props = defineProps({
       collectCount: 0,
       title: '默认标题',
       description: '默认描述',
+      isLiked: false,
+      isCollected: false
     })
   }
 });
@@ -25,7 +23,6 @@ const worksStore = useWorksStore();
 
 <template>
   <div class="image-card">
-    <!-- 图片 -->
     <el-image
       :src="photo.imageUrl"
       :preview-src-list="[photo.imageUrl]"
@@ -33,102 +30,98 @@ const worksStore = useWorksStore();
       :zoom-rate="1.2"
       :max-scale="7"
       :min-scale="0.2"
-      show-progress
       preview-teleported
     />
 
-    <!-- 悬浮层 -->
     <div class="hover-layer">
-       <div class="info">
+      <div class="info">
         <div class="title">{{ photo.title }}</div>
         <p class="desc">{{ photo.description }}</p>
       </div>
-      <!-- 右下角点赞 + 收藏 -->
+
       <div class="actions">
-        <div class="item-like" @click.stop="worksStore.toggleLike(photo.id)" :class="{active: photo.isLiked}">
-           <span v-if="!photo.isLiked">♡</span>
-           <span v-else>♥</span>
+        <div class="item-like" @click.stop="worksStore.toggleLike(photo.id)" :class="{ active: photo.isLiked }">
+          <span v-if="!photo.isLiked">♡</span>
+          <span v-else>♥</span>
           <span>{{ photo.likeCount }}</span>
         </div>
-        <div class="item-collect" @click.stop="worksStore.toggleCollect(photo.id)" :class="{active: photo. isCollected}">
-           <span v-if="!photo.isCollected">☆</span>
-           <span v-else>★</span>
+
+        <div class="item-collect" @click.stop="worksStore.toggleCollect(photo.id)" :class="{ active: photo.isCollected }">
+          <span v-if="!photo.isCollected">☆</span>
+          <span v-else>★</span>
           <span>{{ photo.collectCount }}</span>
         </div>
       </div>
     </div>
-
   </div>
 </template>
 
-
-
 <style scoped>
-/* 卡片容器 */
+/* 🔥 关键修复：删除 height:300px，让高度由图片自动撑开 */
 .image-card {
   position: relative;
   width: 100%;
-  margin-bottom: 12px;
-  border-radius: 8px;
+  /* 去掉了固定高度 height:300px */
+  margin-bottom: 14px;
+  border-radius: 16px;
   overflow: hidden;
   cursor: pointer;
+  background: #0f1724;
 }
 
-/* 图片铺满 */
+/* 图片高度由自身比例决定 → 自然错落 */
 .image-card .el-image {
   width: 100%;
   height: auto;
   display: block;
 }
 
-/* 悬浮半透明遮罩 */
 .hover-layer {
   position: absolute;
   left: 0;
   bottom: 0;
   width: 100%;
-  height: 100%;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.6), transparent);
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.6), transparent 60%);
   color: #fff;
   padding: 12px;
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
   opacity: 0;
-  transition: opacity 0.3s;
-   box-sizing: border-box; /* 修复内边距导致的宽度溢出 */
+  transition: all 0.28s;
+  box-sizing: border-box;
 }
 
-/* 鼠标悬浮显示 */
 .image-card:hover .hover-layer {
   opacity: 1;
 }
 
-/* 左下角标题 */
 .info {
   margin-bottom: 10px;
 }
 
 .title {
-  font-size: 14px;
-  font-weight: 500;
-  margin-bottom: 4px;
+  font-size: 15px;
+  font-weight: 700;
+  margin-bottom: 6px;
 }
 
 .desc {
-  font-size: 12px;
-  opacity: 0.9;
+  font-size: 13px;
+  opacity: 0.92;
   margin: 0;
+  max-height: 38px;
+  overflow: hidden;
 }
 
-/* 右侧图标容器 */
 .actions {
   display: flex;
   gap: 16px;
   align-items: center;
 }
 
-.item {
+.item-like,
+.item-collect {
   display: flex;
   align-items: center;
   gap: 4px;
@@ -136,16 +129,23 @@ const worksStore = useWorksStore();
   transition: all 0.3s;
 }
 
-.item:hover {
-  transform: scale(1.1);
-}
-
 .item-like.active {
   color: #ff4757;
 }
-
 .item-collect.active {
   color: #ffae00;
 }
 
+/* 动画效果保留 */
+.image-card {
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,0.04);
+  box-shadow: 0 10px 30px rgba(2,6,23,0.22);
+  transition: transform 0.35s, box-shadow 0.35s;
+}
+
+.image-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 28px 60px rgba(2,6,23,0.4);
+}
 </style>

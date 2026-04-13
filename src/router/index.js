@@ -4,6 +4,7 @@ import FirstPage from '../views/firstPage/FirstPage.vue'
 import { useUserStore } from '@/stores/userstore.js'
 import { ElMessage } from 'element-plus'
 
+
 const routes = [
   { path: '/', redirect: '/login' },
   { path: '/login', component: Login },
@@ -43,7 +44,36 @@ const routes = [
           component: () => import('@/views/demand/my.vue'),
           meta: { requiresAuth: true }
         },
-        
+          {
+            path: '/order/all',
+            component: () => import('@/views/order/all.vue'),
+            meta: { requiresAuth: true }
+          },
+          {
+            path: '/order/pending',
+            component: () => import('@/views/order/pending.vue'),
+            meta: { requiresAuth: true }
+          },
+          {
+            path: '/order/finished',
+            component: () => import('@/views/order/finished.vue'),
+            meta: { requiresAuth: true }
+          },
+        {
+          path: '/user/dashboard',
+          component: () => import('@/views/user/dashboard.vue'),
+          meta: { requiresAuth: true }
+        },
+        {
+          path: '/user/profile',
+          component: () => import('@/views/user/profile.vue'),
+          meta: { requiresAuth: true }
+        },
+        {
+          path: '/user/settings',
+          component: () => import('@/views/user/profile.vue'),
+          meta: { requiresAuth: true }
+        },
         
       ]
     }
